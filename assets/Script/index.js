@@ -159,7 +159,8 @@ cc.Class({
       this.printLog("please input AppID or key!");
       return;
     }
-    var openid = "" + parseInt(Math.random() * 100000);
+    // openID need to > 10000, otherwise, initialization will fail.
+    var openid = '' + parseInt(Math.random() * 900000 + 10001);
     tencentGME && tencentGME.init(appid, key, openid);
     this.printLog("init tencentGME, appid:" + appid);
     this.printCode(
@@ -195,7 +196,7 @@ cc.Class({
     this.micEnabled = !this.micEnabled;
     this.updateMute();
     tencentGME && tencentGME.enableMic(this.micEnabled);
-    this.printLog("Enable Mic" + this.micEnabled ? "mute" : "unmute");
+    this.printLog("Mic: " + (this.micEnabled ? "unmute" : "mute"));
     this.printCode(`tencentGME && tencentGME.enableMic(${this.micEnabled});`);
   },
 
@@ -203,7 +204,7 @@ cc.Class({
     this.speakerEnabled = !this.speakerEnabled;
     this.updateMute();
     tencentGME && tencentGME.enableSpeaker(this.speakerEnabled);
-    this.printLog("Enable Speaker" + this.speakerEnabled ? "mute" : "unmute");
+    this.printLog("Speaker: " + (this.speakerEnabled ? "unmute" : "mute"));
     this.printCode(
       `tencentGME && tencentGME.enableSpeaker(${this.speakerEnabled});`
     );
@@ -289,6 +290,10 @@ cc.Class({
         break;
       case tencentGME.event.ITMG_MAIN_EVNET_TYPE_USER_UPDATE:
         console.log("ITMG_MAIN_EVNET_TYPE_USER_UPDATE");
+        console.log(JSON.stringify(result));
+        break;
+      default:
+        console.log('' + eventType);
         console.log(JSON.stringify(result));
         break;
     }
